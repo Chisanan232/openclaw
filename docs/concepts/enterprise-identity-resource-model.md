@@ -18,28 +18,28 @@ tickets, not a full runtime implementation.
 
 All enterprise callers and executors are normalized to one `principalType`.
 
-| Principal type    | Description                                                                 |
-| ----------------- | --------------------------------------------------------------------------- |
-| `user`            | Human identity authenticated through enterprise identity providers.         |
-| `agent`           | Runtime agent identity acting within a scoped execution context.            |
-| `service-account` | Non-human account used for automation and system integrations.              |
-| `plugin`          | Plugin-owned identity for delegated plugin operations and capability checks.|
-| `node`            | Device or runtime node identity connected through gateway control channels. |
-| `system`          | Reserved internal platform identity for framework-owned control operations. |
+| Principal type    | Description                                                                  |
+| ----------------- | ---------------------------------------------------------------------------- |
+| `user`            | Human identity authenticated through enterprise identity providers.          |
+| `agent`           | Runtime agent identity acting within a scoped execution context.             |
+| `service-account` | Non-human account used for automation and system integrations.               |
+| `plugin`          | Plugin-owned identity for delegated plugin operations and capability checks. |
+| `node`            | Device or runtime node identity connected through gateway control channels.  |
+| `system`          | Reserved internal platform identity for framework-owned control operations.  |
 
 ## Resource types
 
 All governed targets are normalized to one `resourceType`.
 
-| Resource type      | Description                                                        |
-| ------------------ | ------------------------------------------------------------------ |
-| `org`              | Organization-level control and governance boundary.                |
-| `workspace`        | Workspace-level execution and data isolation boundary.             |
-| `tool`             | Tool capability, invocation surface, or tool configuration object. |
-| `secret`           | Secret reference, secret material handle, or secret policy object. |
-| `plugin`           | Plugin package, plugin runtime surface, or plugin configuration.   |
-| `artifact`         | Versioned build, bundle, model package, or promoted registry item. |
-| `external-target`  | Outbound system target such as APIs, queues, registries, or hosts. |
+| Resource type     | Description                                                        |
+| ----------------- | ------------------------------------------------------------------ |
+| `org`             | Organization-level control and governance boundary.                |
+| `workspace`       | Workspace-level execution and data isolation boundary.             |
+| `tool`            | Tool capability, invocation surface, or tool configuration object. |
+| `secret`          | Secret reference, secret material handle, or secret policy object. |
+| `plugin`          | Plugin package, plugin runtime surface, or plugin configuration.   |
+| `artifact`        | Versioned build, bundle, model package, or promoted registry item. |
+| `external-target` | Outbound system target such as APIs, queues, registries, or hosts. |
 
 ## Ownership and scoping rules
 
@@ -84,3 +84,30 @@ Later runtime work should wire this vocabulary into:
 - `src/plugins` and `src/agents` delegated execution identity propagation
 - `src/secrets` scoped secret mediation and enforcement
 - `ui/src/ui` admin displays for principal and workspace context
+
+## Downstream ticket cross-reference map
+
+This model is designed to be consumed directly by downstream enterprise tickets.
+
+Parent specifications:
+
+- `CONCLAW-63` Architecture Constitution parent spec
+- `CONCLAW-64` Compatibility Contract parent spec
+
+Direct planning dependencies and related tickets:
+
+- `CONCLAW-16` zero-trust auth/session model (subject/session semantics)
+- `CONCLAW-17` policy decision schema (subject/resource fields)
+- `CONCLAW-21` secret broker contract (principal/resource scoping)
+- `CONCLAW-34` non-human identity mapping (agent/plugin/service-account links)
+- `CONCLAW-35` org/workspace boundary enforcement (scope invariants)
+- `CONCLAW-48` token claims and delegated execution context propagation
+- `CONCLAW-49` workspace admin role assignment UX and API expectations
+
+Related context tickets used as upstream planning input:
+
+- `CONCLAW-2` scope and non-goals
+- `CONCLAW-12` fork/incubation and rewrite seams
+- `CONCLAW-46` target topology and module boundary plan
+- `CONCLAW-58` admin surface ownership plan
+- `CONCLAW-30` phased delivery plan
