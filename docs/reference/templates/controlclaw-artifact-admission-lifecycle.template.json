@@ -1,0 +1,83 @@
+{
+  "artifactId": "artifact-0001",
+  "sourceArtifactId": null,
+  "lifecycleState": "ingest",
+  "admissionDecision": "pending",
+  "risk": {
+    "score": 0,
+    "level": "low"
+  },
+  "provenance": {
+    "source": {
+      "kind": "registry",
+      "reference": "oci://registry.example.com/plugin/example:1.0.0"
+    },
+    "digest": "sha256:<artifact-bytes-digest>",
+    "submitterIdentity": "<principal-id>",
+    "submittedAt": "2026-04-18T00:00:00Z",
+    "signature": {
+      "present": true,
+      "signer": "<signer-id>",
+      "verificationResult": "verified"
+    }
+  },
+  "checkpoints": [
+    {
+      "name": "integrity",
+      "result": "pass",
+      "recordedAt": "2026-04-18T00:01:00Z",
+      "metadata": {
+        "formatParseSuccess": true,
+        "digestMatch": true
+      }
+    },
+    {
+      "name": "provenance",
+      "result": "pass",
+      "recordedAt": "2026-04-18T00:02:00Z",
+      "metadata": {
+        "trustedSigner": true,
+        "sourceIdentityVerified": true
+      }
+    },
+    {
+      "name": "security-analysis",
+      "result": "pass",
+      "recordedAt": "2026-04-18T00:03:00Z",
+      "metadata": {
+        "hardDenyFindingCount": 0,
+        "analyzerVersion": "v0.0.0"
+      }
+    },
+    {
+      "name": "policy-admission",
+      "result": "conditional",
+      "recordedAt": "2026-04-18T00:04:00Z",
+      "metadata": {
+        "policyBundleId": "policy-bundle-001",
+        "requiresApproval": true
+      }
+    },
+    {
+      "name": "human-or-system-approval",
+      "result": "pending",
+      "recordedAt": "2026-04-18T00:05:00Z",
+      "metadata": {
+        "approverIdentity": null
+      }
+    }
+  ],
+  "approvalLog": [],
+  "policySnapshot": {
+    "bundleId": "policy-bundle-001",
+    "evaluationSummary": "No hard denies; requires explicit approval."
+  },
+  "registryVisibility": "hidden",
+  "timeline": [
+    {
+      "state": "ingest",
+      "enteredAt": "2026-04-18T00:00:00Z",
+      "enteredBy": "<principal-id>"
+    }
+  ]
+}
