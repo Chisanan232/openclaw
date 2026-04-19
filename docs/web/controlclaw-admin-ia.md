@@ -136,7 +136,7 @@ Dashboard and CLI must consume shared admin APIs for policy, approvals, audit, r
 
 ### Ticket linkage
 
-- Depends on planning outcomes in `CONCLAW-2`, `CONCLAW-12`, `CONCLAW-46`, `CONCLAW-58`, `CONCLAW-63`, and `CONCLAW-64`
+- Depends on `CONCLAW-15`, `CONCLAW-17`, `CONCLAW-19`, `CONCLAW-21`, and `CONCLAW-24`
 - Provides IA and dependency inputs for later approver, auditor, workspace-admin, and platform-admin implementation stories
 
 ## Verification checklist for this ticket
