@@ -1,5 +1,5 @@
 ---
-summary: "Zero-trust enterprise auth/session model and gateway migration plan for ControlClaw"
+summary: "Zero-trust enterprise auth/session model and gateway migration plan for OpenClaw"
 read_when:
   - You are planning enterprise gateway auth, session context, or delegated runtime identity
   - You need a migration map away from trusted-operator assumptions
