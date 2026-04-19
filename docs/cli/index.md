@@ -12,6 +12,7 @@ This page describes the current CLI behavior. If commands change, update this do
 
 ## Command pages
 
+- [`ControlClaw Enterprise CLI Taxonomy`](/cli/controlclaw-enterprise-taxonomy)
 - [`setup`](/cli/setup)
 - [`onboard`](/cli/onboard)
 - [`configure`](/cli/configure)

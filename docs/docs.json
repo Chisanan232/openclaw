@@ -1451,6 +1451,7 @@
                 "group": "CLI commands",
                 "pages": [
                   "cli/index",
+                  "cli/controlclaw-enterprise-taxonomy",
                   {
                     "group": "Gateway and service",
                     "pages": [
