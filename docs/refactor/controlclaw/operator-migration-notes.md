@@ -107,8 +107,8 @@ these explanations:
 
 This migration framing should be referenced by later work in:
 
-- admission and registry planning
-- runtime isolation planning
-- rollout and operator UX planning
+- admission and registry planning such as `CONCLAW-18`
+- runtime isolation planning such as `CONCLAW-19`
+- rollout and operator UX planning such as `CONCLAW-20`
 - any future contract tests or docs that explain ControlClaw compatibility to
   stakeholders
