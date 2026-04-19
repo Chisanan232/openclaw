@@ -120,3 +120,13 @@ This model is expected to be consumed by follow-up enforcement tickets in:
 - `src/plugins` capability registration and policy metadata
 
 The intended next step is to emit `EnterprisePolicyDecision` records at authorization points and keep all deny reasons in structured `rationale` entries instead of freeform-only strings.
+
+## Related acceptance scenario contract
+
+`CONCLAW-22` defines the minimum enterprise data-governance acceptance scenarios
+for outbound destination restrictions and secret-access mediation.
+
+Canonical reference:
+
+- `docs/refactor/controlclaw/outbound-data-secret-governance-scenario.md`
+- `src/shared/enterprise-data-governance-scenarios.ts`
