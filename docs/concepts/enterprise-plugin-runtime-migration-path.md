@@ -106,3 +106,34 @@ state.
 - runtime tickets must preserve envelope and error-code semantics
 - compatibility tickets must classify behavior as preserved, adapted, diverged,
   or unsupported before rollout promotion
+
+## First-migration plugin class selection criteria
+
+Select early plugin classes using the criteria below:
+
+1. low host-privilege dependency compared to other classes
+2. clear capability boundaries that map cleanly to broker mediation
+3. observable request/response behavior suitable for conformance checks
+4. reversible rollout impact if class-specific fallback is needed
+
+## Candidate first-migration classes
+
+| Plugin class                              | Why move early                                                                       | Primary touchpoints                                                                                                                |
+| ----------------------------------------- | ------------------------------------------------------------------------------------ | ---------------------------------------------------------------------------------------------------------------------------------- |
+| Provider and model adapter plugins        | Typically structured request/response behavior with clearer mediation seams.         | `src/plugins/provider-runtime.ts`, `src/plugins/provider-public-artifacts.ts`, `src/agents/model-selection.plugin-runtime.test.ts` |
+| Read-mostly registry and metadata plugins | Lower direct host mutation risk; good for validating envelope and broker plumbing.   | `src/plugins/registry.ts`, `src/plugins/discovery.ts`, `src/plugins/activation-planner.ts`                                         |
+| Bounded tool-proxy plugins                | Strong candidate when capability surface is explicit and already policy-addressable. | `src/agents/tool-policy.ts`, `src/agents/openclaw-plugin-tools.ts`, `src/plugins/capability-provider-runtime.ts`                   |
+
+Defer classes with heavy direct host mutation or complex side effects until
+`S3` hardening controls are proven.
+
+## Follow-up engineering questions
+
+- Which existing plugin classes require compatibility adapters to preserve
+  runtime-visible behavior under isolated execution?
+- Which broker calls need strict timeout budgets versus async completion paths?
+- How should mode selection metadata be represented in plugin manifest and
+  admission outputs without breaking preserved contract surfaces?
+- Which conformance fixtures must be mandatory gates before class promotion from
+  `S2` to `S3`?
+- What minimum rollback telemetry is required for safe class-level reversion?
