@@ -44,18 +44,53 @@ What this lane should prove:
 - supported bundle layouts still parse into the expected metadata shape
 - `openclaw.plugin.json` surfaces still satisfy the documented manifest
   contract
-- skill packaging conventions still classify correctly at the metadata layer
 - config-facing metadata needed by enterprise admission remains available
   without runtime imports
 
 Recommended fixture shape:
 
-- one fixture per artifact family: skill, native plugin, compatible bundle, and
-  tool schema package
+- one fixture per artifact family: native plugin, compatible bundle, and tool
+  schema package
 - expected parse result with explicit classification outcome:
   `preserved`, `adapted`, `diverged`, or `unsupported`
 
-### Lane 2: contract conformance
+### Lane 2: skill compatibility conformance
+
+Purpose:
+
+- verify `SKILL.md` packaging, workspace ingestion, install/update flows, and
+  skill safety checks at the real skill ownership seam
+
+Primary ownership:
+
+- `src/agents/skills.ts`
+- `src/agents/skills/workspace.js`
+- `src/agents/skills-install.ts`
+- `src/agents/skills-status.ts`
+- `src/agents/skills-clawhub.ts`
+- `src/security/skill-scanner.ts`
+- existing skill tests under `src/agents/skills*.test.ts`
+- `src/security/skill-scanner.test.ts`
+
+What this lane should prove:
+
+- `SKILL.md`-based packaging still classifies correctly as a skill surface
+- workspace skill discovery and prompt-building keep the promised skill
+  contract without depending on plugin manifest parsing
+- skill install and update flows preserve supported compatibility expectations
+  while still allowing enterprise scanning or admission
+- skill-specific safety controls remain explicit instead of being hidden under
+  generic plugin or bundle logic
+
+Recommended assertion style:
+
+- keep skill fixtures separate from plugin and bundle fixtures
+- assert skill discovery and install behavior at the `src/agents/skills*`
+  boundary first
+- assert scanner or admission outcomes separately from the underlying skill
+  format contract
+
+### Lane 3: contract conformance
 
 Purpose:
 
@@ -88,7 +123,7 @@ Recommended assertion style:
 - assert that any new enterprise-only metadata remains additive instead of
   mutating existing contract keys silently
 
-### Lane 3: tool and runtime mediation conformance
+### Lane 4: tool and runtime mediation conformance
 
 Purpose:
 
@@ -120,7 +155,7 @@ Recommended assertion style:
 - assert the mediation reason in the runtime result or error code
 - assert that enterprise divergence is deliberate and reviewable
 
-### Lane 4: unsupported-behavior regression tests
+### Lane 5: unsupported-behavior regression tests
 
 Purpose:
 
@@ -150,7 +185,7 @@ claim block:
 Compatibility surface: plugins
 Compatibility layers: contract, runtime
 Expected stance: adapted
-Harness lanes: Lane 2, Lane 3
+Harness lanes: Lane 3, Lane 4
 Reason for divergence: execution now passes through policy and audit mediation
 ```
 
@@ -166,12 +201,31 @@ Owns:
 - metadata parsing
 - discovery and activation planning
 - public-surface and registry contracts
-- fixture-based compatibility classification for skills, plugins, and bundles
+- fixture-based compatibility classification for native plugins and compatible
+  bundles
 
 Must not own:
 
+- skill ingestion and install/update behavior that belongs in
+  `src/agents/skills*`
 - enterprise-only runtime policy decisions that require a live execution path
 - ad hoc tool execution assertions that belong in `src/agents/tools`
+
+### `src/agents/skills`
+
+Owns:
+
+- `SKILL.md` ingestion and workspace skill discovery
+- skill install, update, and status behavior
+- skill-specific safety and scanner integration
+- fixture-based compatibility classification for skill packaging and skill
+  install/update expectations
+
+Must not own:
+
+- native plugin manifest parsing and bundle manifest detection that belong in
+  `src/plugins`
+- generic tool execution assertions that belong in `src/agents/tools`
 
 ### `src/agents/tools`
 
