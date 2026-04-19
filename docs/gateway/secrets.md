@@ -533,6 +533,7 @@ Some SecretInput unions are easier to configure in raw editor mode than in form 
 
 ## Related docs
 
+- Enterprise contract: [Secret Broker Contract](/gateway/secret-broker-contract)
 - CLI commands: [secrets](/cli/secrets)
 - Plan contract details: [Secrets Apply Plan Contract](/gateway/secrets-plan-contract)
 - Credential surface: [SecretRef Credential Surface](/reference/secretref-credential-surface)
