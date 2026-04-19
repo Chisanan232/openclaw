@@ -93,3 +93,19 @@ The same context envelope must flow through all action surfaces:
 - `src/gateway/method-scopes.ts`
 - `ui/src/ui/gateway.ts`
 - future seams under `src/enterprise/auth/**`
+
+## Downstream ticket cross-reference map
+
+Parent and direct dependencies:
+
+- `CONCLAW-15` enterprise identity/resource vocabulary baseline
+- `CONCLAW-16` zero-trust auth/session model (this ticket)
+- `CONCLAW-14` enterprise auth baseline dependency
+
+Policy, secret, and admin follow-up planning:
+
+- `CONCLAW-17` policy decision schema using auth/session context
+- `CONCLAW-21` secret broker mediation bound to authenticated principal scope
+- `CONCLAW-35` workspace/org boundary enforcement expectations
+- `CONCLAW-48` token claim and delegated actor propagation details
+- `CONCLAW-49` workspace admin role-management scenario

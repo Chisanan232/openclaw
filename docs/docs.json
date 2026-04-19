@@ -1055,6 +1055,7 @@
                 "pages": [
                   "concepts/architecture",
                   "concepts/enterprise-identity-resource-model",
+                  "concepts/enterprise-zero-trust-auth-session-model",
                   "concepts/controlclaw-audit-model",
                   "concepts/controlclaw-audit-investigation-scenario",
                   "concepts/enterprise-approval-resolution-scenario",
