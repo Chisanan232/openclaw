@@ -9,9 +9,9 @@ title: "Secret Broker Contract"
 
 # Secret broker contract
 
-This page defines the enterprise planning contract for brokered secret access in ControlClaw.
+This page defines the enterprise planning contract for brokered secret access in OpenClaw.
 
-ControlClaw secret access must move from broad in-process possession toward mediated broker usage with explicit scope, policy, and audit semantics.
+OpenClaw secret access must move from broad in-process possession toward mediated broker usage with explicit scope, policy, and audit semantics.
 
 This is a specification contract for architecture and implementation planning. It is not yet a runtime implementation toggle.
 
@@ -186,7 +186,7 @@ Current OpenClaw SecretRef behavior remains the compatibility baseline:
 - startup/reload fail-fast with last-known-good snapshot
 - `secrets.reload` activation semantics
 
-ControlClaw migration principle:
+OpenClaw migration principle:
 
 - keep SecretRef format and credential-surface compatibility
 - route enterprise secret reads through broker-mediated adapters where policy/audit is required
