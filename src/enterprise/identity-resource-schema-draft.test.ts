@@ -68,6 +68,8 @@ describe("enterprise identity resource schema draft", () => {
   it("rejects non-canonical identifiers", () => {
     expect(isCanonicalEnterpriseId("service-account:acme:ws:payments:ci-bot")).toBe(false);
     expect(parseCanonicalEnterpriseId("cc:service-account:acme:ws:payments")).toBeNull();
+    expect(isCanonicalEnterpriseId("cc:foobar:acme:org:platform")).toBe(false);
+    expect(parseCanonicalEnterpriseId("cc:foobar:acme:org:platform")).toBeNull();
   });
 
   it("covers all required implementation touchpoint areas", () => {

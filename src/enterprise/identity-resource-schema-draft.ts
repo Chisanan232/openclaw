@@ -22,6 +22,10 @@ export const ENTERPRISE_RESOURCE_TYPES = [
 export type EnterpriseResourceType = (typeof ENTERPRISE_RESOURCE_TYPES)[number];
 
 export type EnterpriseEntityType = EnterprisePrincipalType | EnterpriseResourceType;
+const ENTERPRISE_ENTITY_TYPE_SET: ReadonlySet<string> = new Set([
+  ...ENTERPRISE_PRINCIPAL_TYPES,
+  ...ENTERPRISE_RESOURCE_TYPES,
+]);
 
 export const ENTERPRISE_SCOPE_KINDS = ["org", "workspace"] as const;
 
@@ -54,7 +58,8 @@ const CANONICAL_ID_PATTERN =
   /^cc:(?<entityType>[a-z-]+):(?<orgId>[a-z0-9-]+):(?<scopeSegment>org|ws:[a-z0-9-]+):(?<entityId>[a-z0-9-]+)$/;
 
 export function isCanonicalEnterpriseId(input: string): boolean {
-  return CANONICAL_ID_PATTERN.test(input);
+  const parsed = parseCanonicalEnterpriseId(input);
+  return parsed !== null;
 }
 
 export function buildCanonicalEnterpriseId(input: BuildCanonicalEnterpriseIdInput): string {
@@ -76,6 +81,9 @@ export function parseCanonicalEnterpriseId(input: string): ParsedCanonicalEnterp
   }
 
   const { entityType, orgId, scopeSegment, entityId } = match.groups;
+  if (!ENTERPRISE_ENTITY_TYPE_SET.has(entityType)) {
+    return null;
+  }
   const workspaceId = scopeSegment.startsWith("ws:") ? scopeSegment.slice(3) : undefined;
 
   return {

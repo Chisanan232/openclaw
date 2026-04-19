@@ -98,6 +98,7 @@ Direct planning dependencies and related tickets:
 
 - `CONCLAW-16` zero-trust auth/session model (subject/session semantics)
 - `CONCLAW-17` policy decision schema (subject/resource fields)
+- `CONCLAW-36` policy enforcement map with audit-decision attachment guidance
 - `CONCLAW-21` secret broker contract (principal/resource scoping)
 - `CONCLAW-34` non-human identity mapping (agent/plugin/service-account links)
 - `CONCLAW-35` org/workspace boundary enforcement (scope invariants)
