@@ -1,0 +1,43 @@
+{
+  "schemaVersion": "2026-04-19",
+  "artifact": {
+    "artifactId": "artifact-0001",
+    "sourceArtifactId": null,
+    "channel": "approved",
+    "digest": "sha256:<artifact-bytes-digest>",
+    "registryRecordId": "registry-record-0001"
+  },
+  "provenance": {
+    "source": {
+      "kind": "internal-registry",
+      "reference": "registry://controlclaw/plugins/artifact-0001"
+    },
+    "submitterIdentity": "<principal-id>",
+    "approvalLogRef": "approval-log-0001",
+    "policySnapshotRef": "policy-snapshot-0001",
+    "signatureVerification": {
+      "result": "verified",
+      "signer": "<signer-id>"
+    }
+  },
+  "environmentPolicy": {
+    "mode": "enterprise-production",
+    "allowedSources": ["internal-registry"],
+    "disallowedSources": ["local-path", "archive-path", "public-registry", "arbitrary-url"]
+  },
+  "installRequest": {
+    "tenantId": "tenant-001",
+    "runtimeTarget": "runtime-cluster-01",
+    "requestedBy": "<principal-id>",
+    "requestedAt": "2026-04-19T00:00:00Z"
+  },
+  "installEligibility": {
+    "allowed": true,
+    "reasons": []
+  },
+  "enableEligibility": {
+    "allowed": true,
+    "blockedByChannel": false,
+    "blockedByProvenance": false
+  }
+}
