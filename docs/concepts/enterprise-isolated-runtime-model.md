@@ -142,6 +142,121 @@ runner -> host: ready(runnerState=ready)
 | External side-effect operations  | outbound API calls, message sends, repository writes | `allow-with-constraints` plus explicit target and action policy checks |
 | Privileged host operations       | shell exec, elevated tooling, system mutation        | `deny` unless explicit policy and approval grants are present          |
 
+## Capability broker interface and responsibility boundaries
+
+Out-of-process plugin execution must not call privileged host capabilities
+directly. All privileged operations flow through a capability broker interface.
+
+### Broker responsibilities
+
+| Component         | Responsibilities                                                                                    | Must not do                                                  |
+| ----------------- | --------------------------------------------------------------------------------------------------- | ------------------------------------------------------------ |
+| Host runtime      | policy evaluation, admission binding, request correlation, audit emission                           | direct plugin code execution in privileged host context      |
+| Runner            | execute plugin logic, request brokered capabilities, return typed results                           | bypass broker for host/network/secret operations             |
+| Capability broker | enforce policy-scoped capability access, mediate host integrations, return typed capability results | decide identity/policy outside the provided runtime envelope |
+
+### Broker ABI (logical)
+
+All broker requests are side-effect-intent aware and policy-addressable.
+
+- `resolveSecret(ref, runtimeEnvelope) -> SecretHandleResult`
+- `invokeTool(toolRequest, runtimeEnvelope) -> ToolInvocationResult`
+- `openNetwork(target, transportClass, runtimeEnvelope) -> NetworkGrantResult`
+- `accessFilesystem(pathRequest, runtimeEnvelope) -> FilesystemGrantResult`
+- `emitAudit(event, runtimeEnvelope) -> AuditAck`
+
+Each method must:
+
+1. validate runtime envelope scope (`orgId`, `workspaceId`,
+   `admissionDecisionId`);
+2. evaluate action-level policy;
+3. return typed allow/deny/error results;
+4. emit auditable mediation metadata.
+
+## Plugin execution RPC contract
+
+Execution requests and results use versioned envelopes.
+
+### Request envelope
+
+```ts
+type PluginExecRequestV1 = {
+  protocolVersion: "cc.runner.v1";
+  requestId: string;
+  runnerId: string;
+  runtimeEnvelope: {
+    runtimeUnitId: string;
+    runtimeUnitType:
+      | "session-runtime"
+      | "job-runtime"
+      | "tool-runtime"
+      | "plugin-runtime"
+      | "node-runtime";
+    orgId: string;
+    workspaceId?: string;
+    principalId: string;
+    delegatedPrincipalId?: string;
+    policySnapshotId: string;
+    admissionDecisionId: string;
+    auditTraceId: string;
+  };
+  pluginRef: {
+    pluginId: string;
+    pluginVersion: string;
+    pluginDigest: string;
+  };
+  operation: {
+    name: string;
+    args: unknown;
+    timeoutMs: number;
+  };
+};
+```
+
+### Result envelope
+
+```ts
+type PluginExecResultV1 =
+  | {
+      protocolVersion: "cc.runner.v1";
+      requestId: string;
+      status: "ok";
+      value: unknown;
+      usage?: { wallMs: number; cpuMs?: number; memoryBytesPeak?: number };
+      audit: { auditTraceId: string; eventIds: string[] };
+    }
+  | {
+      protocolVersion: "cc.runner.v1";
+      requestId: string;
+      status: "error";
+      error: {
+        code:
+          | "POLICY_DENIED"
+          | "CAPABILITY_DENIED"
+          | "INVALID_REQUEST"
+          | "RUNNER_UNAVAILABLE"
+          | "TIMEOUT"
+          | "INTERNAL_ERROR";
+        message: string;
+        retryable: boolean;
+        details?: Record<string, unknown>;
+      };
+      audit: { auditTraceId: string; eventIds: string[] };
+    };
+```
+
+### Compatibility constraints
+
+- Preserved:
+  request/response envelope remains structured and versioned;
+  plugin identity continues to be expressed as `pluginId` + `pluginVersion`.
+- Adapted:
+  execution requests always require runtime envelope and admission metadata;
+  privileged actions require broker mediation.
+- Diverged:
+  plugin runtime cannot assume direct host capability access even if upstream
+  local runtime behavior allowed it.
+
 ## Runtime state and data boundaries
 
 Runtime-managed state is split into the following classes:
