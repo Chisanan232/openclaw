@@ -82,6 +82,57 @@ Required contract:
 4. Runtime must fail closed when admission metadata is missing, stale, or
    unverifiable.
 
+## Runner lifecycle and handshake model
+
+Enterprise out-of-process plugin execution is modeled as a runner lifecycle.
+Each runner instance owns one process boundary and may host one or more runtime
+units according to policy.
+
+### Lifecycle states
+
+| State         | Meaning                                                               | Allowed next states               |
+| ------------- | --------------------------------------------------------------------- | --------------------------------- |
+| `created`     | Runner process is launched but has not proven protocol compatibility. | `handshaking`, `failed`           |
+| `handshaking` | Runner and host are exchanging protocol/version/capability metadata.  | `ready`, `failed`                 |
+| `ready`       | Runner is admitted for execution but has no active runtime unit.      | `executing`, `draining`, `failed` |
+| `executing`   | Runner is serving one or more active execution requests.              | `ready`, `draining`, `failed`     |
+| `draining`    | Runner stops accepting new work and finishes in-flight requests.      | `terminated`, `failed`            |
+| `terminated`  | Runner is closed cleanly and cannot process requests.                 | none                              |
+| `failed`      | Runner violated protocol, policy, health, or liveness expectations.   | `terminated`                      |
+
+### Handshake phases
+
+1. `hello`: runner sends protocol version, runner id, plugin manifest digest,
+   and declared capabilities.
+2. `challenge`: host returns policy snapshot reference, required capability
+   constraints, and optional nonce/challenge metadata.
+3. `attest`: runner proves it can satisfy the requested constraints and returns
+   resolved capability plan.
+4. `accept`: host issues `admissionDecisionId`, runtime envelope defaults, and
+   heartbeat requirements.
+5. `ready`: runner transitions to `ready`; host may dispatch execution requests.
+
+Any phase timeout, schema violation, or policy mismatch transitions to `failed`.
+
+### Bootstrap sequence (logical)
+
+```text
+host -> runner: launch + connect
+runner -> host: hello(protocolVersion, runnerId, pluginDigest, capabilities)
+host -> runner: challenge(policySnapshotId, constraints, heartbeatSpec)
+runner -> host: attest(capabilityPlan, constraintProof)
+host -> runner: accept(admissionDecisionId, runtimeEnvelopeDefaults)
+runner -> host: ready(runnerState=ready)
+```
+
+### Liveness and failure handling
+
+- Runner must emit heartbeat frames at the negotiated interval.
+- Host marks runner unhealthy if heartbeat deadline is exceeded.
+- Unhealthy runners are removed from scheduling and moved to `failed`.
+- Any in-flight request tied to a failed runner returns a typed failure result
+  (defined in RPC contract below) with `retryable` metadata.
+
 ## Execution classes and default isolation stance
 
 | Execution class                  | Examples                                             | Default stance                                                         |
