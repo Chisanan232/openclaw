@@ -300,6 +300,28 @@ Later runtime tickets should apply this model to:
 - `src/plugins` plugin-runtime startup and policy-aware activation boundaries
 - `src/secrets` secret resolution interfaces keyed by runtime identity envelope
 
+## Integration mapping in current runtime and plugin loading code
+
+The table below maps this protocol to expected integration seams in the current
+repository layout.
+
+| Ticket deliverable                  | Current touchpoints                                                                                            | Expected integration change                                                                                                          |
+| ----------------------------------- | -------------------------------------------------------------------------------------------------------------- | ------------------------------------------------------------------------------------------------------------------------------------ |
+| Runner lifecycle and handshake      | `src/plugins/registry.ts`, `src/plugins/runtime.ts`, `src/gateway/server-runtime-services.ts`                  | add runner registration lifecycle, handshake validation, and runner health tracking before plugin execution dispatch                 |
+| Capability broker mediation         | `src/agents/tools/**`, `src/agents/tool-policy.ts`, `src/plugins/capability-provider-runtime.ts`               | route privileged capability access through brokered interfaces with runtime envelope and policy context                              |
+| RPC request/result envelopes        | `src/agents/pi-embedded-runner/runtime.ts`, `src/agents/openclaw-tools.ts`, `src/gateway/tools-invoke-http.ts` | normalize request correlation ids, runtime envelope propagation, and typed error/result envelopes across runner boundaries           |
+| Isolation and containment behavior  | `src/agents/sandbox/**`, `src/gateway/node-invoke-*.ts`, `src/secrets/**`                                      | bind isolation constraints to runtime unit scope and enforce fail-closed containment rules for unhealthy or policy-violating runners |
+| Compatibility adaptation boundaries | `src/plugins/bundle-manifest.ts`, `src/plugins/activation-planner.ts`, `src/plugins/contracts/**`              | keep format/contract compatibility while explicitly adapting runtime behavior to brokered enterprise execution                       |
+
+## Phased implementation sequence
+
+1. Add runner lifecycle state machine and handshake validation seams in plugin
+   registry/runtime startup.
+2. Introduce capability broker APIs with typed allow/deny/error outcomes.
+3. Wire RPC request/result envelopes through runner invocation paths.
+4. Add containment and health handling to gateway/runtime scheduling.
+5. Add compatibility-layer contract tests for preserved vs adapted behavior.
+
 ## Non-goals for this ticket
 
 - defining a final production sandbox implementation per platform
