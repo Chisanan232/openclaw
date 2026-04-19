@@ -46,8 +46,10 @@ export interface ZeroTrustSessionContext {
   actorPrincipalType: ZeroTrustPrincipalType;
   subjectPrincipalId: string;
   subjectPrincipalType: ZeroTrustPrincipalType;
+  delegationChain?: readonly ZeroTrustDelegationClaim[];
   orgId: string;
   workspaceId?: string;
+  nodeIdentityId?: string;
   trustLevel: ZeroTrustTrustLevel;
   authMethod: ZeroTrustAuthMethod;
   sessionId: string;
@@ -87,6 +89,7 @@ export const ZERO_TRUST_PROPAGATION_REQUIREMENTS: readonly ZeroTrustPropagationR
     requiredContextFields: [
       "subjectPrincipalId",
       "subjectPrincipalType",
+      "delegationChain",
       "orgId",
       "workspaceId",
       "policyContext",
@@ -111,6 +114,7 @@ export const ZERO_TRUST_PROPAGATION_REQUIREMENTS: readonly ZeroTrustPropagationR
       "actorPrincipalType",
       "orgId",
       "workspaceId",
+      "nodeIdentityId",
       "trustLevel",
       "requestId",
     ],

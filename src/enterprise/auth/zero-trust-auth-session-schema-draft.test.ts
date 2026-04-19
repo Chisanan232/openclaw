@@ -45,6 +45,16 @@ describe("zero trust auth session schema draft", () => {
         (requirement) => requirement.requiredContextFields.length > 0,
       ),
     ).toBe(true);
+
+    const toolExecutionRequirement = ZERO_TRUST_PROPAGATION_REQUIREMENTS.find(
+      (requirement) => requirement.surface === "tool-execution",
+    );
+    expect(toolExecutionRequirement?.requiredContextFields).toContain("delegationChain");
+
+    const nodeCommandRequirement = ZERO_TRUST_PROPAGATION_REQUIREMENTS.find(
+      (requirement) => requirement.surface === "node-command",
+    );
+    expect(nodeCommandRequirement?.requiredContextFields).toContain("nodeIdentityId");
   });
 
   it("enumerates trusted-operator assumptions to remove", () => {

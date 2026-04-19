@@ -70,13 +70,13 @@ Migration steps:
 
 The same context envelope must flow through all action surfaces:
 
-| Surface                      | Required context                                                      |
-| ---------------------------- | --------------------------------------------------------------------- |
-| Gateway method dispatch      | actor, org/workspace scope, auth method, scopes                       |
-| Tool execution               | subject principal, delegated actor chain, policy context, request id  |
-| Plugin action dispatch       | plugin principal + source actor, workspace boundary, capability grant |
-| Node command dispatch        | caller principal, node identity, approved command scope, request id   |
-| Audit and approval producers | actor/subject ids, decision scope, session id, request id             |
+| Surface                      | Required context                                                       |
+| ---------------------------- | ---------------------------------------------------------------------- |
+| Gateway method dispatch      | actor, org/workspace scope, auth method, scopes                        |
+| Tool execution               | subject principal, `delegationChain`, policy context, request id       |
+| Plugin action dispatch       | plugin principal + source actor, workspace boundary, capability grant  |
+| Node command dispatch        | caller principal, `nodeIdentityId`, approved command scope, request id |
+| Audit and approval producers | actor/subject ids, decision scope, session id, request id              |
 
 ## Trusted-operator assumptions to remove or downgrade
 
