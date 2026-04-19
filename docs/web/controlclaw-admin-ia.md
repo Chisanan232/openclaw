@@ -134,6 +134,10 @@ Later implementation under `ui/src/ui` should keep the navigation structure abov
 
 Dashboard and CLI must consume shared admin APIs for policy, approvals, audit, registry, and workspace actions. Do not duplicate control logic in surface-specific handlers.
 
+Shared API contract reference:
+
+- [ControlClaw Admin API Contract](/gateway/controlclaw-admin-api-contract)
+
 ### Ticket linkage
 
 - Depends on `CONCLAW-15`, `CONCLAW-17`, `CONCLAW-19`, `CONCLAW-21`, and `CONCLAW-24`
