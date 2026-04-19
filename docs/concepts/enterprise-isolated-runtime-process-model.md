@@ -117,3 +117,30 @@ component failure -> pause scheduling path -> recover component -> resume
 - Every containment action must emit an auditable event with scope and reason.
 - Circuit-breaker events must include explicit release criteria.
 - Recovery workflows must prefer controlled resumption over bulk unfreeze.
+
+## Orchestration and observability touchpoint mapping
+
+The map below aligns this process model with expected later implementation
+touchpoints in the current codebase.
+
+| Process-model concern                                     | Likely touchpoints                                                                                                             | Expected follow-up                                                      |
+| --------------------------------------------------------- | ------------------------------------------------------------------------------------------------------------------------------ | ----------------------------------------------------------------------- |
+| lifecycle orchestration between control-plane and runners | `src/gateway/server-runtime-services.ts`, `src/gateway/server-runtime-config.ts`, `src/plugins/runtime.ts`                     | add process-state orchestration and health-aware scheduling controls    |
+| trust-boundary enforcement for mediated capabilities      | `src/agents/tool-policy.ts`, `src/agents/openclaw-plugin-tools.ts`, `src/plugins/capability-provider-runtime.ts`               | ensure privileged calls require broker mediation and policy context     |
+| failure classification and containment handling           | `src/gateway/node-invoke-system-run-approval.ts`, `src/agents/sandbox/tool-policy.ts`, `src/agents/bash-tools.exec-runtime.ts` | align error classes with request/process/component/workspace scopes     |
+| audit and correlation for lifecycle and containment       | `src/channels/logging.ts`, `src/agents/session-tool-result-state.ts`, `src/plugins/logger.ts`                                  | emit stable trace and scope metadata for state transitions and failures |
+| rollout controls in enterprise mode                       | `src/plugins/activation-planner.ts`, `src/plugins/config-contracts.ts`, `src/plugins/config-schema.ts`                         | gate process-model rollout by policy and class-scoped controls          |
+
+### Process lifecycle versus plugin lifecycle distinction
+
+- Process lifecycle governs runtime process health and schedulability.
+- Plugin lifecycle governs plugin discovery, registration, and activation.
+- Implementations must not conflate process restarts with plugin
+  registration-state changes.
+
+### Observability baseline for first implementation wave
+
+1. Process state transitions count by role and workspace scope.
+2. Failure class rates (`request`, `process`, `component`, `workspace`, `org`).
+3. Containment action counts and mean recovery time by scope.
+4. Broker mediation denial and timeout rates by capability class.
