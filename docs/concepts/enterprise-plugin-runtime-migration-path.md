@@ -70,3 +70,39 @@ plugin request
 
 Mode selection must be deterministic for a given policy snapshot and rollout
 state.
+
+## Compatibility risks and mitigation plan
+
+| Risk                                                       | Why it matters                                                                 | Mitigation                                                                               |
+| ---------------------------------------------------------- | ------------------------------------------------------------------------------ | ---------------------------------------------------------------------------------------- |
+| Implicit in-process assumptions inside plugin runtime code | Plugins may depend on direct host behavior not available in isolated runners.  | add class-based migration gates and explicit adapter seams before migration cutover      |
+| Contract drift between in-process and isolated paths       | Callers may observe inconsistent behavior for the same plugin capability.      | define and enforce versioned request/result envelopes and conformance checks             |
+| Performance regressions during runner mediation            | Added broker and IPC hops can increase latency and timeout risk.               | baseline S0 metrics, enforce S2 latency budgets, and use staged rollout thresholds       |
+| Incomplete policy coverage for brokered capabilities       | High-risk operations might escape intended enterprise controls.                | fail-closed policy defaults, deny-by-default for privileged operations, and audit checks |
+| Rollback complexity in mixed-mode operation                | Fast rollback is required if isolated execution causes production impact.      | keep deterministic mode toggles and per-class fallback controls with clear ownership     |
+| Operational overhead from runner lifecycle failures        | Runner instability can reduce execution reliability if not isolated correctly. | health checks, draining states, and typed retryable/non-retryable failure semantics      |
+
+## Rollout mitigation controls
+
+### Guardrails required before expansion from `S2` to `S3`
+
+- conformance checks for preserved/adapted behavior per migrated plugin class
+- runner availability SLO and timeout budget tracking
+- policy deny and broker error rate thresholds with automatic hold rules
+- reversible rollout controls at org and workspace scope
+
+### Fallback and rollback policy
+
+1. Roll forward only when migration-class metrics are within thresholds for a
+   full evaluation window.
+2. On threshold violation, freeze class expansion first, then route impacted
+   class back to in-process mode via policy toggle.
+3. Keep migration-state changes auditable with explicit reason codes.
+
+### Cross-ticket alignment requirements
+
+- admission and registry tickets must publish metadata required for execution
+  mode decisions
+- runtime tickets must preserve envelope and error-code semantics
+- compatibility tickets must classify behavior as preserved, adapted, diverged,
+  or unsupported before rollout promotion
