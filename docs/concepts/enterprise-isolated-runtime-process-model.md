@@ -75,3 +75,45 @@ The lifecycle below models process-level states (not plugin lifecycle states).
 2. `draining` is mandatory before routine shutdown to protect in-flight work.
 3. `failed` processes are never re-used; recovery occurs through fresh process
    provisioning.
+
+## Failure semantics and containment expectations
+
+Failures are classified by blast radius and containment requirements.
+
+| Failure class      | Typical trigger                                                                | Expected containment                                               |
+| ------------------ | ------------------------------------------------------------------------------ | ------------------------------------------------------------------ |
+| `request-scoped`   | malformed request payload, request timeout, per-request policy deny            | fail only the request; process remains `ready` or `active`         |
+| `process-scoped`   | protocol violation, heartbeat/liveness failure, unrecoverable runner exception | transition process to `failed`; terminate and reprovision process  |
+| `component-scoped` | broker outage, control-plane policy snapshot unavailability                    | pause affected scheduling path; preserve healthy independent paths |
+| `workspace-scoped` | repeated policy violations or correlated runtime instability in one workspace  | apply workspace-level circuit breaker and rollout hold             |
+| `org-scoped`       | severe systemic security or trust-boundary breach                              | enforce org-level emergency controls and block expansion           |
+
+### Containment rules
+
+1. Contain at the smallest viable scope that protects trust boundaries.
+2. Fail closed for policy, identity, or admission ambiguity.
+3. Preserve deterministic request error codes for operators and automation.
+4. Do not silently downgrade isolated paths to in-process execution.
+
+### Retry and recovery expectations
+
+| Condition                                     | Retryability                                      | Recovery path                                              |
+| --------------------------------------------- | ------------------------------------------------- | ---------------------------------------------------------- |
+| typed request timeout with healthy process    | retryable                                         | bounded request retry with same policy snapshot            |
+| runner process in `failed` state              | not retryable on same process                     | reprovision runner, then retry by scheduling policy        |
+| broker unavailable with stale fallback denied | not retryable until broker healthy                | restore broker health; re-evaluate admission and queue     |
+| control-plane snapshot mismatch               | not retryable until snapshot consistency restored | refresh snapshot version, then restart affected lifecycles |
+
+### Containment and state transitions
+
+```text
+request failure (scoped) -> return typed error -> process stays schedulable
+process failure -> state=failed -> terminate -> provision new process
+component failure -> pause scheduling path -> recover component -> resume
+```
+
+### Operational expectations
+
+- Every containment action must emit an auditable event with scope and reason.
+- Circuit-breaker events must include explicit release criteria.
+- Recovery workflows must prefer controlled resumption over bulk unfreeze.
