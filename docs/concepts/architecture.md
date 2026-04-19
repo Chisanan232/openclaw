@@ -151,6 +151,7 @@ Details: [Gateway protocol](/gateway/protocol), [Pairing](/channels/pairing),
 ## Related
 
 - [Agent Loop](/concepts/agent-loop) — detailed agent execution cycle
+- [ControlClaw Audit Event Model](/concepts/controlclaw-audit-model) - canonical audit taxonomy, evidence rules, and replay requirements
 - [Gateway Protocol](/gateway/protocol) — WebSocket protocol contract
 - [Queue](/concepts/queue) — command queue and concurrency
 - [Security](/gateway/security) — trust model and hardening
