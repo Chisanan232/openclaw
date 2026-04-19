@@ -1056,6 +1056,7 @@
                   "concepts/architecture",
                   "concepts/enterprise-identity-resource-model",
                   "concepts/controlclaw-audit-model",
+                  "concepts/controlclaw-audit-investigation-scenario",
                   "concepts/agent",
                   "concepts/agent-loop",
                   "concepts/system-prompt",

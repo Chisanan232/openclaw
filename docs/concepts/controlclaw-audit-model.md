@@ -183,3 +183,7 @@ The map below identifies expected producer surfaces for implementation phases.
 - producer mapping is concrete enough for implementation tickets to assign code
   ownership
 - SIEM and UI teams can depend on one canonical internal event schema
+
+## Related
+
+- [ControlClaw Audit Investigation Scenario](/concepts/controlclaw-audit-investigation-scenario)
