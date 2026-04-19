@@ -22,6 +22,9 @@ Use this page for day-1 startup and day-2 operations of the Gateway service.
   <Card title="Secrets plan contract" icon="shield-check" href="/gateway/secrets-plan-contract">
     Exact `secrets apply` target/path rules and ref-only auth-profile behavior.
   </Card>
+  <Card title="Secret broker contract" icon="shield" href="/gateway/secret-broker-contract">
+    Enterprise secret mediation contract for scoped requests, policy decisions, and audit events.
+  </Card>
 </CardGroup>
 
 ## 5-minute local startup
