@@ -1,0 +1,35 @@
+{
+  "artifactId": "artifact-0001",
+  "versionId": "v2026.04.20.1",
+  "sourceArtifactId": "source-artifact-0001",
+  "repackagedFromVersionId": null,
+  "digest": "sha256:<artifact-bytes-digest>",
+  "lifecycleState": "publish",
+  "publicationChannel": "approved",
+  "publicationStatus": "published",
+  "publishedAt": "2026-04-20T00:00:00Z",
+  "publishedBy": "<principal-id>",
+  "admissionRunId": "admission-run-0001",
+  "provenance": {
+    "source": {
+      "kind": "external-registry",
+      "reference": "oci://external.example.com/plugin/pkg:1.0.0"
+    },
+    "submitterIdentity": "<principal-id>",
+    "signatureVerification": {
+      "result": "verified",
+      "signer": "<source-signer-id>"
+    }
+  },
+  "enterpriseSignature": {
+    "signer": "<enterprise-signer-id>",
+    "signedAt": "2026-04-20T00:00:00Z"
+  },
+  "approvalLogRefs": ["approval-log-0001"],
+  "policySnapshotRef": "policy-snapshot-0001",
+  "riskSummary": {
+    "score": 22,
+    "level": "low"
+  },
+  "decisionReasonCodes": ["POLICY_PASS", "SIGNATURE_VERIFIED", "CHANNEL_APPROVED"]
+}
