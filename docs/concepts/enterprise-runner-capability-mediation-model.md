@@ -115,3 +115,40 @@ The runtime must distinguish error classes by source and governance meaning.
 2. Retries must preserve `auditTraceId` linkage to original attempt chain.
 3. Reprovisioned runners start with fresh lifecycle state; they do not inherit
    failed in-memory execution context.
+
+## Audit and admin implications
+
+### Audit event contract implications
+
+Each mediation decision and recovery action must emit auditable records with:
+
+- `auditTraceId`
+- `decisionId`
+- `requestId`
+- `decisionClass` and `decisionCode`
+- `errorClass` (when applicable)
+- `recoveryAction` (when applicable)
+- `actorType` (`system`, `operator`, `automation`)
+
+### Admin diagnostics implications
+
+Admin surfaces should allow operators to distinguish:
+
+1. broker policy denials vs governance blocks
+2. plugin-code failures vs broker/runtime infrastructure failures
+3. transient retryable failures vs terminal operator-action-required failures
+
+## Runtime transition consumer mapping
+
+| Consumer                | Required signals                                                       | Primary touchpoints                                                                                             |
+| ----------------------- | ---------------------------------------------------------------------- | --------------------------------------------------------------------------------------------------------------- |
+| Audit pipelines         | mediation decisions, error-class transitions, recovery actions         | `src/plugins/logger.ts`, `src/channels/logging.ts`, `src/agents/session-tool-result-state.ts`                   |
+| Admin diagnostics views | denied vs blocked vs failed split, retryability, operator action flags | `src/plugins/config-schema.ts`, `src/plugins/config-contracts.ts`, future admin UI/runtime diagnostics surfaces |
+| Runtime orchestration   | quarantine/restart/retry outcomes and health transitions               | `src/gateway/server-runtime-services.ts`, `src/plugins/runtime.ts`, `src/agents/bash-tools.exec-runtime.ts`     |
+
+### Follow-up observability baseline
+
+- decision-class distribution by capability class and workspace
+- error-class trend and retry success rates
+- quarantine frequency and mean time to operator release
+- denied/block outcomes with top policy-rule contributors
