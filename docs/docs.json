@@ -1441,6 +1441,7 @@
                   "web/index",
                   "web/control-ui",
                   "web/controlclaw-admin-ia",
+                  "web/controlclaw-admin-management-scenario",
                   "web/dashboard",
                   "web/webchat",
                   "web/tui"
