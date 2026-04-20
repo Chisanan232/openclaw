@@ -71,3 +71,47 @@ Each mediated action emits one decision output envelope:
 | `control-plane`     | issue policy snapshots and rollout/quarantine controls         | directly execute capability calls on runner behalf              |
 | `capability-broker` | evaluate requests against policy and return governed decisions | mutate policy source-of-truth or bypass runtime envelope checks |
 | `runner`            | request mediated capabilities and honor final decision outputs | bypass broker for privileged capabilities                       |
+
+## Failure and error taxonomy
+
+The runtime must distinguish error classes by source and governance meaning.
+
+| Error class           | Source                   | Example conditions                                          | Default decision class |
+| --------------------- | ------------------------ | ----------------------------------------------------------- | ---------------------- |
+| `POLICY_DENIED`       | broker-policy            | missing grant, disallowed target, policy-rule deny          | `deny`                 |
+| `GOVERNANCE_BLOCKED`  | control-plane governance | quarantine, rollout hold, emergency shutdown gate           | `block`                |
+| `REQUEST_INVALID`     | request contract         | malformed payload, missing runtime envelope fields          | `error`                |
+| `PLUGIN_EXEC_FAILURE` | plugin code path         | plugin logic exception after allowed capability access      | `error`                |
+| `BROKER_EXEC_FAILURE` | broker runtime           | mediation pipeline failure, dependency service failure      | `error`                |
+| `RUNNER_UNHEALTHY`    | process isolation layer  | runner failed health checks or protocol/liveness invariants | `error`                |
+| `CAPABILITY_TIMEOUT`  | bounded execution        | broker or mediated capability execution exceeded timeout    | `error`                |
+| `CAPABILITY_FAILED`   | downstream capability    | capability path returned terminal failure                   | `error`                |
+
+## Recovery expectations
+
+### Retry model
+
+| Error class           | Retryable         | Recovery expectation                                            |
+| --------------------- | ----------------- | --------------------------------------------------------------- |
+| `POLICY_DENIED`       | no                | requires policy/admin change before reattempt                   |
+| `GOVERNANCE_BLOCKED`  | no                | requires explicit unblock action from governance owner          |
+| `REQUEST_INVALID`     | no                | caller must fix request contract                                |
+| `PLUGIN_EXEC_FAILURE` | conditional       | retry only if class policy allows and idempotency is guaranteed |
+| `BROKER_EXEC_FAILURE` | conditional       | retry after broker health signal recovers                       |
+| `RUNNER_UNHEALTHY`    | no (same process) | reprovision runner, then reschedule according to rollout policy |
+| `CAPABILITY_TIMEOUT`  | conditional       | bounded retry with timeout/backoff controls                     |
+| `CAPABILITY_FAILED`   | conditional       | retry policy depends on capability class and failure reason     |
+
+### Recovery actions
+
+- `restart`: replace unhealthy runner process and rebind lifecycle state.
+- `quarantine`: remove runner/class from scheduling until operator release.
+- `retry`: bounded automatic or operator-triggered reattempt under policy.
+- `operator-intervention`: manual triage required before resumption.
+
+### Recovery invariants
+
+1. `deny` and `block` outcomes are not auto-retried.
+2. Retries must preserve `auditTraceId` linkage to original attempt chain.
+3. Reprovisioned runners start with fresh lifecycle state; they do not inherit
+   failed in-memory execution context.
