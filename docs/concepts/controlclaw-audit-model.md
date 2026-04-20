@@ -186,4 +186,5 @@ The map below identifies expected producer surfaces for implementation phases.
 
 ## Related
 
+- [ControlClaw Audit Event Producer Map](/concepts/controlclaw-audit-producer-map)
 - [ControlClaw Audit Investigation Scenario](/concepts/controlclaw-audit-investigation-scenario)
