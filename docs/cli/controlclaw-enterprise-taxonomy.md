@@ -161,6 +161,10 @@ Map command groups to backend API domains and primary admin personas.
 | `workspace`   | `workspace-service`, `workspace-policy-overlay`, `workspace-membership` | Workspace Admin, Platform Admin           |
 | `breakglass`  | `emergency-controls`, `incident-recovery`, `audit-critical`             | Platform Admin, Security Admin            |
 
+Shared API contract reference:
+
+- [ControlClaw Admin API Contract](/gateway/controlclaw-admin-api-contract)
+
 ## Workflow buckets required by the ticket
 
 This taxonomy explicitly distinguishes:

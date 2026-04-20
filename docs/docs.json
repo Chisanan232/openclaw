@@ -1384,6 +1384,7 @@
                       "gateway/bridge-protocol",
                       "gateway/openai-http-api",
                       "gateway/openresponses-http-api",
+                      "gateway/controlclaw-admin-api-contract",
                       "gateway/tools-invoke-http-api",
                       "gateway/cli-backends",
                       "gateway/local-models"
