@@ -1060,6 +1060,7 @@
                   "concepts/controlclaw-audit-producer-map",
                   "concepts/controlclaw-audit-investigation-scenario",
                   "concepts/enterprise-approval-resolution-scenario",
+                  "concepts/enterprise-policy-enforcement-point-map",
                   "concepts/agent",
                   "concepts/agent-loop",
                   "concepts/system-prompt",
