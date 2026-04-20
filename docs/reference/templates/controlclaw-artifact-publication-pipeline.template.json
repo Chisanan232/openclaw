@@ -1,0 +1,56 @@
+{
+  "schemaVersion": "2026-04-19",
+  "workflowRunId": "pipeline-run-0001",
+  "artifact": {
+    "sourceArtifactId": "source-artifact-0001",
+    "currentArtifactId": "artifact-0001",
+    "digest": "sha256:<artifact-bytes-digest>"
+  },
+  "stageStatus": {
+    "intake": "passed",
+    "scan": "passed",
+    "signVerify": "passed",
+    "repackage": "not-required",
+    "reSign": "not-required",
+    "publish": "pending",
+    "handoff": "pending"
+  },
+  "scanResult": {
+    "riskScore": 27,
+    "riskLevel": "low",
+    "policyResult": "pass",
+    "hardDenyFindingCount": 0
+  },
+  "signature": {
+    "upstreamVerification": {
+      "required": true,
+      "result": "verified",
+      "signer": "<source-signer-id>"
+    },
+    "enterpriseSigning": {
+      "performed": false,
+      "signer": null
+    }
+  },
+  "provenance": {
+    "source": {
+      "kind": "external-registry",
+      "reference": "oci://external.example.com/plugin/pkg:1.0.0"
+    },
+    "submitterIdentity": "<principal-id>",
+    "lineage": {
+      "sourceArtifactId": "source-artifact-0001",
+      "repackagedFrom": null
+    }
+  },
+  "publication": {
+    "channel": "candidate",
+    "registryRecordId": null,
+    "publishEligible": true
+  },
+  "failureHandling": {
+    "status": "none",
+    "reasonCode": null,
+    "retryEligible": false
+  }
+}
