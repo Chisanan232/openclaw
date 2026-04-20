@@ -118,3 +118,11 @@ Later tickets that claim to satisfy this story should verify:
 - Consumes `CONCLAW-17` policy decision vocabulary and capability model.
 - Consumes `CONCLAW-19` audit taxonomy and evidence framing.
 - Feeds DLP or CASB-oriented integration and admin UX work.
+
+## Related egress decision model
+
+`CONCLAW-39` extends this scenario contract with data-classification touchpoints
+and a typed egress decision model:
+
+- `docs/refactor/controlclaw/data-classification-egress-decision-model.md`
+- `src/shared/enterprise-egress-decision-model.ts`
