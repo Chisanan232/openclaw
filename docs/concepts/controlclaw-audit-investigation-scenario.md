@@ -102,4 +102,5 @@ Likely downstream touchpoints:
 
 - [ControlClaw Audit Event Model](/concepts/controlclaw-audit-model)
 - [ControlClaw Audit Event Producer Map](/concepts/controlclaw-audit-producer-map)
+- [ControlClaw Audit Query and Retention Model](/concepts/controlclaw-audit-query-retention-model)
 - [Gateway Protocol](/gateway/protocol)

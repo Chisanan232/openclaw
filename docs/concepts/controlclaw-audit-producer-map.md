@@ -97,3 +97,4 @@ Coverage is insufficient if any required link is absent and no explicit
 
 - [ControlClaw Audit Event Model](/concepts/controlclaw-audit-model)
 - [ControlClaw Audit Investigation Scenario](/concepts/controlclaw-audit-investigation-scenario)
+- [ControlClaw Audit Query and Retention Model](/concepts/controlclaw-audit-query-retention-model)
