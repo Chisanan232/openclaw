@@ -1,0 +1,36 @@
+{
+  "artifactId": "artifact-0001",
+  "versionId": "v2026.04.21.1",
+  "reviewerIdentity": "<principal-id>",
+  "decision": "approve",
+  "reasonCode": "REVIEW_APPROVED",
+  "reasonDetail": "Scan, signature, and policy checks satisfied enterprise requirements.",
+  "decidedAt": "2026-04-21T00:00:00Z",
+  "referencedScanResultId": "scan-result-0001",
+  "referencedPolicySnapshotRef": "policy-snapshot-0001",
+  "reviewEvidence": {
+    "submitterIdentity": "<submitter-id>",
+    "provenanceSource": "oci://external.example.com/plugin/pkg:1.0.0",
+    "digest": "sha256:<artifact-bytes-digest>",
+    "riskSummary": {
+      "score": 18,
+      "level": "low"
+    },
+    "signatureVerification": {
+      "result": "verified",
+      "signer": "<source-signer-id>"
+    },
+    "policyResult": "pass"
+  },
+  "resultingStatus": {
+    "publicationEligibility": "eligible",
+    "installEligibility": {
+      "enterpriseProduction": true
+    }
+  },
+  "auditEvent": {
+    "eventType": "registry.review.decision.recorded",
+    "eventId": "audit-event-0001",
+    "occurredAt": "2026-04-21T00:00:01Z"
+  }
+}
