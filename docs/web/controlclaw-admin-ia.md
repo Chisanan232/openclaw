@@ -146,6 +146,7 @@ Shared API contract reference:
 
 - Depends on `CONCLAW-15`, `CONCLAW-17`, `CONCLAW-19`, `CONCLAW-21`, and `CONCLAW-24`
 - Provides IA and dependency inputs for later approver, auditor, workspace-admin, and platform-admin implementation stories
+- Scenario validation reference: [ControlClaw Approval Queue Scenario](/web/controlclaw-approval-queue-scenario)
 
 ## Verification checklist for this ticket
 
