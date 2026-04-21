@@ -1062,6 +1062,7 @@
                   "concepts/controlclaw-audit-investigation-scenario",
                   "concepts/controlclaw-audit-query-retention-model",
                   "concepts/enterprise-approval-resolution-scenario",
+                  "concepts/enterprise-approval-lifecycle-model",
                   "concepts/enterprise-policy-enforcement-point-map",
                   "concepts/agent",
                   "concepts/agent-loop",
