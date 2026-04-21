@@ -137,6 +137,7 @@ Dashboard and CLI must consume shared admin APIs for policy, approvals, audit, r
 Scenario validation reference:
 
 - [ControlClaw Admin Management Scenario](/web/controlclaw-admin-management-scenario)
+- [ControlClaw Audit Explorer Scenario](/web/controlclaw-audit-explorer-scenario)
 
 Shared API contract reference:
 

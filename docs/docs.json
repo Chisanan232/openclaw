@@ -1452,6 +1452,7 @@
                   "web/controlclaw-admin-ia",
                   "web/controlclaw-admin-management-scenario",
                   "web/controlclaw-approval-queue-scenario",
+                  "web/controlclaw-audit-explorer-scenario",
                   "web/dashboard",
                   "web/webchat",
                   "web/tui"
