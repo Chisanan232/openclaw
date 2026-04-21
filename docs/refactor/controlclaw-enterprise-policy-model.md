@@ -130,3 +130,5 @@ Canonical reference:
 
 - `docs/refactor/controlclaw/outbound-data-secret-governance-scenario.md`
 - `src/shared/enterprise-data-governance-scenarios.ts`
+- `docs/refactor/controlclaw/secret-access-review-revoke-governance-scenario.md`
+- `src/shared/enterprise-secret-access-governance-scenarios.ts`

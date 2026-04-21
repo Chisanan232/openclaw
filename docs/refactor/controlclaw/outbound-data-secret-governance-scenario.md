@@ -126,3 +126,11 @@ and a typed egress decision model:
 
 - `docs/refactor/controlclaw/data-classification-egress-decision-model.md`
 - `src/shared/enterprise-egress-decision-model.ts`
+
+## Related secret review and revocation model
+
+`CONCLAW-53` extends this governance surface with a review/revocation scenario
+contract for workspace- and principal-scoped secret grants:
+
+- `docs/refactor/controlclaw/secret-access-review-revoke-governance-scenario.md`
+- `src/shared/enterprise-secret-access-governance-scenarios.ts`
