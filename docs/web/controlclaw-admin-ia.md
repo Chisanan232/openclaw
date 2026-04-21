@@ -134,6 +134,10 @@ Later implementation under `ui/src/ui` should keep the navigation structure abov
 
 Dashboard and CLI must consume shared admin APIs for policy, approvals, audit, registry, and workspace actions. Do not duplicate control logic in surface-specific handlers.
 
+Scenario validation reference:
+
+- [ControlClaw Admin Management Scenario](/web/controlclaw-admin-management-scenario)
+
 Shared API contract reference:
 
 - [ControlClaw Admin API Contract](/gateway/controlclaw-admin-api-contract)
