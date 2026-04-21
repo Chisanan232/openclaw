@@ -1057,6 +1057,7 @@
                   "concepts/enterprise-identity-resource-model",
                   "concepts/enterprise-zero-trust-auth-session-model",
                   "concepts/enterprise-non-human-identity-mapping-rules",
+                  "concepts/enterprise-org-workspace-boundary-enforcement-model",
                   "concepts/controlclaw-audit-model",
                   "concepts/controlclaw-audit-producer-map",
                   "concepts/controlclaw-audit-investigation-scenario",
