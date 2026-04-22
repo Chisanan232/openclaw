@@ -1067,6 +1067,7 @@
                   "concepts/enterprise-approval-lifecycle-model",
                   "concepts/enterprise-policy-enforcement-point-map",
                   "concepts/enterprise-policy-storage-versioning-model",
+                  "concepts/enterprise-policy-authoring-workflow",
                   "concepts/agent",
                   "concepts/agent-loop",
                   "concepts/system-prompt",
